@@ -8,7 +8,10 @@ use App\Models\Task ;
 
 class tasksController extends Controller
 {
-
+    function test(){
+        $test = $this->model("TaskRepository");
+        echo $test->test();
+    }
     function index()
     {
         // require(ROOT . 'app/Models/Task.php');
