@@ -6,6 +6,9 @@ use App\Config\Database;
 
 class Task extends Model
 {
+//    public $id = null;
+//    public $title = null;
+//    public $description = null;
     public function create($title, $description)
     {
         $sql = "INSERT INTO tasks (title, description, created_at, updated_at) VALUES (:title, :description, :created_at, :updated_at)";

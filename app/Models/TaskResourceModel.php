@@ -1,9 +1,12 @@
 <?php
-class TaskResourceModel extends TaskRepository {
-    public $Test;
+namespace App\Models;
+
+use App\Core\ResourceModel;
+
+class TaskResourceModel extends ResourceModel {
     public function __construct()
     {
-        $this->Test = $this->model("ResourceModel");
+
     }
 }
 ?>

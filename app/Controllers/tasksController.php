@@ -5,13 +5,10 @@ require "../vendor/autoload.php";
 
 use App\Core\Controller;
 use App\Models\Task ;
+use App\Models\TaskModel;
 
 class tasksController extends Controller
 {
-    function test(){
-        $test = $this->model("TaskRepository");
-        echo $test->test();
-    }
     function index()
     {
         // require(ROOT . 'app/Models/Task.php');
@@ -29,7 +26,8 @@ class tasksController extends Controller
         {
         //    require(ROOT . 'app/Models/Task.php');
 
-            $task= new Task();
+            $task= new Task(); // title trong, desctip
+
 
             if ($task->create($_POST["title"], $_POST["description"]))
             {
@@ -44,8 +42,25 @@ class tasksController extends Controller
     {
         // require(ROOT . 'app/Models/Task.php');
         $task= new Task();
+//        $task->set('title', 'title');
+//        $task->set('description', 'fdsfds');
+//
+//
+//       $title =  $task->get('title'); // title
+//
+//        $task->title = 'ok';
+//        $task->description = 'ok1';
+//        $task->action = '2';
+//
+//        print_r($task->getProperties());die;
+//        $abc = new TaskModel('Title','Task');
+//        $abc->set('anc','ABC');
+//        echo $abc->get('');die();
 
         $d["task"] = $task->showTask($id);
+
+//        $pẻopẻtie = $task->getProperties(); // ['id' => 1, 'task' => task1, ///]
+
 
         if (isset($_POST["title"]))
         {
