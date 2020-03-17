@@ -3,58 +3,84 @@ namespace App\Core;
 
 use App\Config\Database;
 
-class ResourceModel{
-    public function create($title, $description)
+class ResourceModel implements ResourceModelInterface {
+    private $table = null;
+    private $id = null;
+    private $model = null;
+    public function _init($table, $id, $model)
     {
-        $sql = "INSERT INTO tasks (title, description, created_at, updated_at) VALUES (:title, :description, :created_at, :updated_at)";
+        $this->table = $table;
+        $this->id = $id;
+        $this->model = $model;
+    }
+
+    public function save($model)
+    {
+        // TODO: Implement save() method.
+    }
+
+    public function add($model)
+    {
+        $setCol = '';
+        $setVal = '';
+        foreach ($model as $col => $val){
+            if ($setCol) {
+                $setCol .= ",";
+            }
+            $setCol .=$col;
+            if ($setVal) {
+                $setVal .= ",";
+            }
+            $setVal .=":".$col;
+        }
+        //title, description, created_at, updated_at
+        //:title, :description, :created_at, :updated_at
+        $sql = "INSERT INTO ".$this->table." (".$setCol.") VALUES (".$setVal.")";
 
         $req = Database::getBdd()->prepare($sql);
 
-        return $req->execute([
-            'title' => $title,
-            'description' => $description,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
-
-        ]);
+        return $req->execute($model);
     }
 
-    public function showTask($id)
+    public function get($id)
     {
-        $sql = "SELECT * FROM tasks WHERE id =" . $id;
+        $sql = "SELECT * FROM ". $this->table ." WHERE ". $this->id ." =" . $id;
         $req = Database::getBdd()->prepare($sql);
         $req->execute();
         return $req->fetch();
     }
 
-    public function showAllTasks()
+    public function getAll()
     {
-        $sql = "SELECT * FROM tasks";
+        $sql = "SELECT * FROM " . $this->table;
         $req = Database::getBdd()->prepare($sql);
         $req->execute();
         return $req->fetchAll();
     }
 
-    public function edit($id, $title, $description)
+    public function update($model, $id) // ['title' => '', 'de' => '' ]
     {
-        $sql = "UPDATE tasks SET title = :title, description = :description , updated_at = :updated_at WHERE id = ". $id;
+        $set = '';
+        foreach ($model as $col => $val) {
+            if ($set) {
+                $set .= ",";
+            }
+            $set .= $col .'=:'. $col;
+        }
+        //title = :title, description = :description
+        $sql = "UPDATE " . $this->table. " SET ".$set." WHERE " . $this->id." = ". $id;
 
         $req = Database::getBdd()->prepare($sql);
 
-        return $req->execute([
-            'id' => $id,
-            'title' => $title,
-            'description' => $description,
-            'updated_at' => date('Y-m-d H:i:s')
-
-        ]);
+        return $req->execute($model);
     }
 
     public function delete($id)
     {
-        $sql = 'DELETE FROM tasks WHERE id = '. $id;
+        $sql = "DELETE FROM ".$this->table." WHERE ".$this->id." = ". $id;
         $req = Database::getBdd()->prepare($sql);
         return $req->execute([$id]);
     }
+
     }
 ?>

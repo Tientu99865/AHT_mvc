@@ -6,12 +6,6 @@ class TaskModel extends Model {
     private $title = null;
     private $description = null;
 
-    public function __construct($title,$description)
-    {
-        $this->title = $title;
-        $this->description = $description;
-    }
-
     public function getTitle(){
         return $this->title;
         }
